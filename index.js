@@ -1,43 +1,67 @@
 "use strict";
 const clear = require('clear');
 const chalk = require('chalk');
+const commander = require('commander');
 
 const teacups = [
-`    )
-   °(
-   __)__
-C\\|     \\
-  \\ Tea /
-   \\___/`,
-`    (
-      ) °
-   °_(__
-C\\|     \\
-  \\ Tea /
-   \\___/`
+chalk`{gray
+    ((((
+    ((((
+     ))))}
+  _ .---.
+ ( |\`---'|
+  \\|     |
+  : .___, :
+   \`-----'
+`,
+chalk`{gray
+    ((((
+    ))))
+    ((((}
+  _ .---.
+ ( |\`---'|
+  \\|     |
+  : .___, :
+   \`-----'
+`,
+chalk`{gray
+    ((((
+    ((((
+    ((((}
+  _ .---.
+ ( |\`---'|
+  \\|     |
+  : .___, :
+   \`-----'
+`
 ];
 
-const LAST_ARG = process.argv[process.argv.length - 1];
-if (!Number.isInteger(parseInt(LAST_ARG))) {
-    console.log(`
-Usage: teatimer [seconds]
+const program = new commander.Command();
+program
+    .version('0.0.1')
+    .description('Start a timer for your cup of tea 🍵')
+    .command('teatimer <minutes>')
+    .description('Time waiting (in minutes)')
+    .parse(process.argv);
 
-Start a timer for your cup of tea 🍵
-
-FLAGS:
-    -h, --help      Prints help information
-    -v, --version   Prints version information
-`);
-    process.exit(1);
+if (program.version) {
+    const packagejson = require('./package.json');
+    console.log(packagejson.version);
 }
+
+if (!program.args.length || !Number.isInteger(parseInt(program.args[0]))) {
+    program.help();
+    process.exit(0);
+}
+
 let activeFrame = 0;
 const TOTAL_SECONDS = parseInt(LAST_ARG, 10) * 60;
 const START_TIME = new Date().getTime();
 
 setInterval(() => {
-    activeFrame = (activeFrame >= 1) ? 0 : 1;
+    activeFrame = (activeFrame >= 2) ? 0 : activeFrame + 1;
     const SECONDS_LEFT = parseInt(TOTAL_SECONDS - (new Date().getTime() - START_TIME) / 1000, 10);
     const TIME_LEFT_COLORED = chalk.underline.bgRed.bold(`${parseInt(SECONDS_LEFT/60)}m ${SECONDS_LEFT%60}s`);
     clear();
-    console.log(`${chalk.yellow.bold(teacups[activeFrame])}\n\nYour 🍵 is ready in ${TIME_LEFT_COLORED}`);
+    console.log(`${chalk.green.bold(teacups[activeFrame])}\n\nReady in ${TIME_LEFT_COLORED}`);
 }, 1000);
