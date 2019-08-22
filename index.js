@@ -1,57 +1,25 @@
+#! /usr/bin/env node
 "use strict";
+
 const clear = require('clear');
 const chalk = require('chalk');
 const commander = require('commander');
 const notifier = require('node-notifier');
+const project = require('./package.json');
+const teacups = require('./ascii-cup');
 
-const teacups = [
-chalk`{gray
-    ((((
-    ((((
-     ))))}
-  _ .---.
- ( |\`---'|
-  \\|     |
-  : .___, :
-   \`-----'
-`,
-chalk`{gray
-    ((((
-     ))))
-    ((((}
-  _ .---.
- ( |\`---'|
-  \\|     |
-  : .___, :
-   \`-----'
-`,
-chalk`{gray
-    ((((
-    ((((
-    ((((}
-  _ .---.
- ( |\`---'|
-  \\|     |
-  : .___, :
-   \`-----'
-`
-];
-
-const program = new commander.Command();
-program
-    .version('0.0.1', '-v, --version', 'output the current version')
-    .description('Start a timer for your cup of tea 🍵')
-    .command('teatimer <minutes>')
-    .description('Time waiting (in minutes)')
+const teaTimer = new commander.Command();
+teaTimer
+    .usage('<minutes>')
+    .description(`
+    tea-timer (${project.version})
+    Start a timer for your cup of tea 🍵
+    `)
     .parse(process.argv);
-
-if (program.version) {
-    const packagejson = require('./package.json');
-}
 
 const LAST_ARG = process.argv[process.argv.length - 1];
 if (!LAST_ARG || !Number.isInteger(parseInt(LAST_ARG))) {
-    program.help();
+    teaTimer.help();
     process.exit(0);
 }
 
@@ -61,9 +29,12 @@ const START_TIME = new Date().getTime();
 
 const updateTeacup = setInterval(() => {
     activeFrame = (activeFrame >= 2) ? 0 : activeFrame + 1;
+
     const SECONDS_LEFT = parseInt(TOTAL_SECONDS - (new Date().getTime() - START_TIME) / 1000, 10);
     const TIME_LEFT_COLORED = chalk.underline.bgRed.bold(`${parseInt(SECONDS_LEFT/60)}m ${SECONDS_LEFT%60}s`);
+
     clear();
+
     if (SECONDS_LEFT <= 0) {
         console.log(chalk.bgMagenta.bold('TEA TIME <3'));
         notifier.notify({
