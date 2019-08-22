@@ -1,5 +1,7 @@
 # tea-timer 🍵🕦
 
+tea-timer in nodejs
+
 ## Installation
 
 ```
@@ -16,10 +18,4 @@ tea-timer <minutes>
 
 ## Notifications
 
-To receive a desktop notification on Linux, tea-timer uses: `notify-osd` (Default) or `libnotify-bin`
-
-If `notify-osd` doesn't work, install `libnotify-bin`:
-
-```
-sudo apt install libnotify-bin
-```
+To receive a desktop notification on Linux, tea-timer uses: `notify-osd` and `libnotify-bin`.
