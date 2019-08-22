@@ -2,6 +2,7 @@
 const clear = require('clear');
 const chalk = require('chalk');
 const commander = require('commander');
+const notifier = require('node-notifier');
 
 const teacups = [
 chalk`{gray
@@ -48,11 +49,6 @@ if (program.version) {
     const packagejson = require('./package.json');
 }
 
-/* if (!program.args || !program.args.length || !Number.isInteger(parseInt(program.args[0]))) {
-    program.help();
-    process.exit(0);
-} */
-
 const LAST_ARG = process.argv[process.argv.length - 1];
 if (!LAST_ARG || !Number.isInteger(parseInt(LAST_ARG))) {
     program.help();
@@ -70,6 +66,11 @@ const updateTeacup = setInterval(() => {
     clear();
     if (SECONDS_LEFT <= 0) {
         console.log(chalk.bgMagenta.bold('TEA TIME <3'));
+        notifier.notify({
+            title: 'Tea time!',
+            message: 'Sir, your tea is ready!',
+            sound: true
+          });
         clearInterval(updateTeacup);
     } else {
         console.log(`${chalk.green.bold(teacups[activeFrame])}\n\nReady in ${TIME_LEFT_COLORED}`);
