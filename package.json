@@ -13,6 +13,7 @@
   "devDependencies": {
     "chalk": "^2.4.2",
     "clear": "^0.1.0",
-    "commander": "^3.0.0"
+    "commander": "^3.0.0",
+    "node-notifier": "^5.4.3"
   }
 }
