@@ -19,3 +19,5 @@ tea-timer <minutes>
 ## Notifications
 
 To receive a desktop notification on Linux, tea-timer uses: `notify-osd` and `libnotify-bin`.
+
+To install them: `sudo apt install notify-osd libnotify-bin`

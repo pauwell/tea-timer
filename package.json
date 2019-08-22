@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {
-    "postinstall": "sudo apt install notify-osd libnotify-bin"
-  },
   "bin": {
     "tea-timer": "index.js"
   },
