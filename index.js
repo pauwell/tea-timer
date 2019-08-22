@@ -17,14 +17,14 @@ teaTimer
     `)
     .parse(process.argv);
 
-const minutes = process.argv[process.argv.length - 1];
-if (!minutes || !Number.isInteger(parseInt(minutes))) {
+const LAST_ARG = process.argv[process.argv.length - 1];
+if (!LAST_ARG || !Number.isInteger(parseInt(LAST_ARG))) {
     teaTimer.help();
     process.exit(0);
 }
 
 let activeFrame = 0;
-const TOTAL_SECONDS = parseInt(minutes, 10) * 60;
+const TOTAL_SECONDS = parseInt(LAST_ARG, 10) * 60;
 const START_TIME = new Date().getTime();
 
 const updateTeacup = setInterval(() => {
