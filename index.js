@@ -5,8 +5,9 @@ const clear = require('clear');
 const chalk = require('chalk');
 const commander = require('commander');
 const notifier = require('node-notifier');
+
 const project = require('./package.json');
-const teacups = require('./ascii-cup');
+const teaCups = require('./ascii-cup');
 
 const teaTimer = new commander.Command();
 teaTimer
@@ -27,11 +28,15 @@ let activeFrame = 0;
 const TOTAL_SECONDS = parseInt(LAST_ARG, 10) * 60;
 const START_TIME = new Date().getTime();
 
+/**
+ * Show terminal output
+ */
 const updateTeacup = setInterval(() => {
     activeFrame = (activeFrame >= 2) ? 0 : activeFrame + 1;
 
     const SECONDS_LEFT = parseInt(TOTAL_SECONDS - (new Date().getTime() - START_TIME) / 1000, 10);
-    const TIME_LEFT_COLORED = chalk.underline.bgRed.bold(`${parseInt(SECONDS_LEFT/60)}m ${SECONDS_LEFT%60}s`);
+    const TIME_LEFT_STRING = `${parseInt(SECONDS_LEFT/60)}m ${SECONDS_LEFT%60}s`
+    const TIME_LEFT_COLORED = chalk.underline.bgRed.bold(TIME_LEFT_STRING);
 
     clear();
 
@@ -44,6 +49,7 @@ const updateTeacup = setInterval(() => {
           });
         clearInterval(updateTeacup);
     } else {
-        console.log(`${chalk.green.bold(teacups[activeFrame])}\n\nReady in ${TIME_LEFT_COLORED}`);
+        process.stdout.write('\x1b]2;' + project.name + ' ' + TIME_LEFT_STRING + '\x1b\x5c');
+        console.log(`${chalk.green.bold(teaCups[activeFrame])}\n\nReady in ${TIME_LEFT_COLORED}`);
     }
 }, 1000);
